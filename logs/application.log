@@ -1,0 +1,7 @@
+[08-Jul-2025 15:50:22 Europe/Berlin] PHP Warning:  error_log(C:\xampp\htdocs\Blog_platform\app\controllers/../logs/blog_controller.log): Failed to open stream: No such file or directory in C:\xampp\htdocs\Blog_platform\app\controllers\BlogController.php on line 181
+[08-Jul-2025 15:50:28 Europe/Berlin] PHP Warning:  error_log(C:\xampp\htdocs\Blog_platform\app\controllers/../logs/blog_controller.log): Failed to open stream: No such file or directory in C:\xampp\htdocs\Blog_platform\app\controllers\BlogController.php on line 181
+[08-Jul-2025 15:54:20 Europe/Berlin] PHP Parse error:  syntax error, unexpected token "elseif", expecting "function" or "const" in C:\xampp\htdocs\Blog_platform\app\controllers\BlogController.php on line 109
+[08-Jul-2025 15:54:24 Europe/Berlin] PHP Parse error:  syntax error, unexpected token "elseif", expecting "function" or "const" in C:\xampp\htdocs\Blog_platform\app\controllers\BlogController.php on line 109
+[08-Jul-2025 15:54:26 Europe/Berlin] PHP Parse error:  syntax error, unexpected token "elseif", expecting "function" or "const" in C:\xampp\htdocs\Blog_platform\app\controllers\BlogController.php on line 109
+[08-Jul-2025 15:54:51 Europe/Berlin] PHP Parse error:  syntax error, unexpected token "elseif", expecting "function" or "const" in C:\xampp\htdocs\Blog_platform\app\controllers\BlogController.php on line 109
+[08-Jul-2025 15:54:52 Europe/Berlin] PHP Parse error:  syntax error, unexpected token "elseif", expecting "function" or "const" in C:\xampp\htdocs\Blog_platform\app\controllers\BlogController.php on line 109
