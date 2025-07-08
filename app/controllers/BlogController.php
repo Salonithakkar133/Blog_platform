@@ -50,12 +50,47 @@ class BlogController extends Controller {
             $this->requireAuth();
             
             if ($action === 'write' && $_SERVER['REQUEST_METHOD'] === 'POST') {
-                // ... existing write handling code ...
+                $title = $this->sanitize($_POST['title'] ?? '');
+                $content = $this->sanitize($_POST['content'] ?? '');
+                $blog_category = $this->sanitize($_POST['blog_category'] ?? '');
+                $image = $_FILES['image']['name'] ? $this->handleImageUpload($_FILES['image']) : '';
+
+                $this->log("Write attempt: title=$title, category=$blog_category, user_id={$_SESSION['id']}");
+                if (empty($title) || empty($content) || empty($blog_category)) {
+                    $this->log("Write failed: Missing required fields");
+                    $_SESSION['message'] = 'Missing required fields.';
+                    $this->redirect('write');
+                    return;
+                }
+
+                if ($this->getModel('blog')->create($title, $content, $_SESSION['id'], $blog_category, 'pending', $image)) {
+                    $_SESSION['message'] = 'Blog submitted for approval!';
+                    $this->log("Blog created successfully for user {$_SESSION['id']}");
+                    unset($_SESSION['blogs']);
+                } else {
+                    $errorInfo = $this->getModel('blog')->getLastErrorInfo();
+                    $_SESSION['message'] = 'Failed to submit blog. Please try again.';
+                    $this->log("Blog create failed: " . print_r($errorInfo, true));
+                }
+                $this->redirect('dashboard');
             }
             elseif ($action === 'edit') {
                 return $this->handleEditAction($id);
             }
-            // ... other action handlers ...
+            elseif ($action === 'delete') {
+                return $this->handleDeleteAction($id);
+            }
+            elseif ($action === 'approve' && $_SESSION['role'] === 'admin') {
+                return $this->handleApproveAction($id);
+            }
+            elseif ($action === 'reject' && $_SESSION['role'] === 'admin') {
+                return $this->handleRejectAction($id);
+            }
+            else {
+                $this->log("Unknown action: $action for id=" . ($id ?? 'null'));
+                $_SESSION['message'] = 'Invalid action requested.';
+                $this->redirect('dashboard');
+            }
             
         } catch (Exception $e) {
             error_log("Error in handleAction: " . $e->getMessage());
@@ -117,63 +152,68 @@ class BlogController extends Controller {
             
             $this->redirect('dashboard');
             return true;
-        
-    elseif ($action === 'delete') {
-            $blog = $this->getBlogById($id);
-            if (!$blog) {
-                $_SESSION['message'] = 'Blog not found.';
-                $this->redirect('dashboard');
-                return;
-            }
-
-            $this->log("Delete attempt for id=$id, status={$blog['status']}, author_id={$blog['author_id']}");
-            if ($_SESSION['role'] !== 'admin' && $blog['author_id'] != $_SESSION['id']) {
-                $_SESSION['message'] = 'Unauthorized action.';
-                $this->redirect('dashboard');
-                return;
-            }
-
-            if ($this->getModel('blog')->delete($id)) {
-                $_SESSION['message'] = 'Blog deleted successfully!';
-                $this->log("Blog deleted successfully for id=$id");
-                unset($_SESSION['blogs']);
-            } else {
-                $errorInfo = $this->getModel('blog')->getLastErrorInfo();
-                $_SESSION['message'] = 'Failed to delete blog.';
-                $this->log("Blog delete failed: " . print_r($errorInfo, true));
-            }
-            $this->redirect('dashboard');
-        } elseif ($action === 'approve' && $_SESSION['role'] === 'admin') {
-            $this->log("Attempting to approve blog id=$id");
-            if ($this->getModel('blog')->updateStatus($id, 'approved')) {
-                $_SESSION['message'] = 'Blog approved!';
-                unset($_SESSION['blogs']);
-                $this->redirect('published');
-            } else {
-                $errorInfo = $this->getModel('blog')->getLastErrorInfo();
-                $_SESSION['message'] = 'Failed to approve blog.';
-                $this->log("Approve failed: " . print_r($errorInfo, true));
-                $this->redirect('pending');
-            }
-        } elseif ($action === 'reject' && $_SESSION['role'] === 'admin') {
-            $this->log("Attempting to reject blog id=$id");
-            if ($this->getModel('blog')->updateStatus($id, 'rejected')) {
-                $_SESSION['message'] = 'Blog rejected!';
-                unset($_SESSION['blogs']);
-                $this->redirect('pending');
-            } else {
-                $errorInfo = $this->getModel('blog')->getLastErrorInfo();
-                $_SESSION['message'] = 'Failed to reject blog.';
-                $this->log("Reject failed: " . print_r($errorInfo, true));
-                $this->redirect('pending');
-            }
-        } else {
-            $this->log("Unknown action: $action for id=$id");
-            $_SESSION['message'] = 'Invalid action requested.';
-            $this->redirect('dashboard');
         }
-    }}
- private function handleImageUpload($file) {
+    }
+
+    private function handleDeleteAction($id) {
+        $blog = $this->getBlogById($id);
+        if (!$blog) {
+            $_SESSION['message'] = 'Blog not found.';
+            $this->redirect('dashboard');
+            return false;
+        }
+
+        $this->log("Delete attempt for id=$id, status={$blog['status']}, author_id={$blog['author_id']}");
+        if ($_SESSION['role'] !== 'admin' && $blog['author_id'] != $_SESSION['id']) {
+            $_SESSION['message'] = 'Unauthorized action.';
+            $this->redirect('dashboard');
+            return false;
+        }
+
+        if ($this->getModel('blog')->delete($id)) {
+            $_SESSION['message'] = 'Blog deleted successfully!';
+            $this->log("Blog deleted successfully for id=$id");
+            unset($_SESSION['blogs']);
+        } else {
+            $errorInfo = $this->getModel('blog')->getLastErrorInfo();
+            $_SESSION['message'] = 'Failed to delete blog.';
+            $this->log("Blog delete failed: " . print_r($errorInfo, true));
+        }
+        $this->redirect('dashboard');
+        return true;
+    }
+
+    private function handleApproveAction($id) {
+        $this->log("Attempting to approve blog id=$id");
+        if ($this->getModel('blog')->updateStatus($id, 'approved')) {
+            $_SESSION['message'] = 'Blog approved!';
+            unset($_SESSION['blogs']);
+            $this->redirect('published');
+        } else {
+            $errorInfo = $this->getModel('blog')->getLastErrorInfo();
+            $_SESSION['message'] = 'Failed to approve blog.';
+            $this->log("Approve failed: " . print_r($errorInfo, true));
+            $this->redirect('pending');
+        }
+        return true;
+    }
+
+    private function handleRejectAction($id) {
+        $this->log("Attempting to reject blog id=$id");
+        if ($this->getModel('blog')->updateStatus($id, 'rejected')) {
+            $_SESSION['message'] = 'Blog rejected!';
+            unset($_SESSION['blogs']);
+            $this->redirect('pending');
+        } else {
+            $errorInfo = $this->getModel('blog')->getLastErrorInfo();
+            $_SESSION['message'] = 'Failed to reject blog.';
+            $this->log("Reject failed: " . print_r($errorInfo, true));
+            $this->redirect('pending');
+        }
+        return true;
+    }
+
+    private function handleImageUpload($file) {
         $targetDir = "uploads/";
         if (!is_dir($targetDir)) {
             mkdir($targetDir, 0775, true);
@@ -197,6 +237,10 @@ class BlogController extends Controller {
     }
 
     private function log($message) {
-        error_log(date('[Y-m-d H:i:s] ') . $message . PHP_EOL, 3, __DIR__ . '/../logs/blog_controller.log');
+        $logFile = __DIR__ . '/../logs/blog_controller.log';
+        if (!is_dir(dirname($logFile))) {
+            mkdir(dirname($logFile), 0775, true);
+        }
+        error_log(date('[Y-m-d H:i:s] ') . $message . PHP_EOL, 3, $logFile);
     }
 }
