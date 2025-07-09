@@ -1,11 +1,12 @@
 <?php
 $title = 'Register - Blog Platform';
 require_once 'app/views/template/header.php';
+echo "View loaded<br>"; // Debug output
 ?>
     <h1>Register</h1>
-    <?php if (isset($errors) && !empty($errors)): ?>
+    <?php if (isset($data['errors']) && !empty($data['errors'])): ?>
         <div class="alert alert-danger">
-            <?php foreach ($errors as $error): ?>
+            <?php foreach ($data['errors'] as $error): ?>
                 <p><?php echo htmlspecialchars($error); ?></p>
             <?php endforeach; ?>
         </div>
@@ -101,7 +102,8 @@ require_once 'app/views/template/header.php';
             }
 
             if (isValid) {
-                alert("Form submitted successfully!");
+                // Remove alert for actual submission
+                // alert("Form submitted successfully!");
                 return true;
             } else {
                 return false;

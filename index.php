@@ -19,22 +19,22 @@ $authController = new AuthController();
 $controller = new Controller();
 $blogController = new BlogController();
 
-// ✅ Handle blog actions (write/edit/delete/approve/reject)
+// Handle blog actions (write/edit/delete/approve/reject)
 if (isset($_GET['action'])) {
     $action = $_GET['action'];
     $id = isset($_GET['id']) ? (int)$_GET['id'] : null;
 
     try {
-        // ✅ Handle 'write' blog submission (no ID)
+        // Handle 'write' blog submission (no ID)
         if ($action === 'write' && $_SERVER['REQUEST_METHOD'] === 'POST') {
             $blogController->handleAction('write');
             exit;
         }
 
-        // ✅ Handle other blog actions with or without ID
+        //Handle other blog actions with or without ID
         $handled = $blogController->handleAction($action, $id);
 
-        // ✅ Fallback for GET-based edit (if not handled internally)
+        //Fallback for GET-based edit (if not handled internally)
         if ($action === 'edit' && $_SERVER['REQUEST_METHOD'] === 'GET' && !$handled) {
             $blog = $blogController->getBlogById($id);
             if ($blog) {
@@ -48,15 +48,13 @@ if (isset($_GET['action'])) {
             }
         }
     } catch (Exception $e) {
-        error_log(date('[Y-m-d H:i:s] ') . "Action failed: " . $e->getMessage() . ", Trace: " . $e->getTraceAsString() . PHP_EOL, 3, __DIR__ . '/logs/application.log');
-        $_SESSION['message'] = 'An error occurred. Please try again.';
         header("Location: index.php?page=dashboard");
         exit;
     }
     exit;
 }
 
-// ✅ Default page routing
+// Default page routing
 if (!isset($_GET['page']) || empty(trim($_GET['page']))) {
     if (isset($_SESSION['id'])) {
         header("Location: index.php?page=dashboard");

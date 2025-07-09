@@ -38,3 +38,174 @@
 [09-Jul-2025 07:54:03 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Blog_platform\app\views\write.php on line 35
 [09-Jul-2025 07:54:03 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Blog_platform\app\views\write.php on line 35
 [09-Jul-2025 07:54:03 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Blog_platform\app\views\write.php on line 35
+[09-Jul-2025 09:04:18 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, string given in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 50
+[09-Jul-2025 09:04:30 Europe/Berlin] PHP Warning:  Undefined array key "E_mail" in C:\xampp\htdocs\Blog_platform\app\controllers\AuthController.php on line 18
+[09-Jul-2025 09:04:30 Europe/Berlin] PHP Warning:  Undefined array key "username" in C:\xampp\htdocs\Blog_platform\app\controllers\AuthController.php on line 19
+[09-Jul-2025 09:10:54 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Blog_platform\app\views\write.php on line 35
+[09-Jul-2025 09:10:54 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Blog_platform\app\views\write.php on line 35
+[09-Jul-2025 09:10:54 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Blog_platform\app\views\write.php on line 35
+[09-Jul-2025 09:10:54 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Blog_platform\app\views\write.php on line 35
+[09-Jul-2025 09:11:37 Europe/Berlin] PHP Warning:  Undefined array key "E_mail" in C:\xampp\htdocs\Blog_platform\app\controllers\AuthController.php on line 18
+[09-Jul-2025 09:11:37 Europe/Berlin] PHP Warning:  Undefined array key "username" in C:\xampp\htdocs\Blog_platform\app\controllers\AuthController.php on line 19
+[09-Jul-2025 09:29:25 Europe/Berlin] PHP Warning:  require_once(app/views/auth/register.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 41
+[09-Jul-2025 09:29:25 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'app/views/auth/register.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php:41
+Stack trace:
+#0 C:\xampp\htdocs\Blog_platform\app\controllers\AuthController.php(58): Controller->view('auth/register', Array)
+#1 C:\xampp\htdocs\Blog_platform\index.php(81): AuthController->register()
+#2 {main}
+  thrown in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 41
+[09-Jul-2025 09:29:29 Europe/Berlin] PHP Warning:  require_once(app/views/auth/register.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 41
+[09-Jul-2025 09:29:29 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'app/views/auth/register.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php:41
+Stack trace:
+#0 C:\xampp\htdocs\Blog_platform\app\controllers\AuthController.php(58): Controller->view('auth/register', Array)
+#1 C:\xampp\htdocs\Blog_platform\index.php(81): AuthController->register()
+#2 {main}
+  thrown in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 41
+[09-Jul-2025 09:29:45 Europe/Berlin] PHP Warning:  require_once(app/views/auth/register.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 41
+[09-Jul-2025 09:29:45 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'app/views/auth/register.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php:41
+Stack trace:
+#0 C:\xampp\htdocs\Blog_platform\app\controllers\AuthController.php(58): Controller->view('auth/register', Array)
+#1 C:\xampp\htdocs\Blog_platform\index.php(81): AuthController->register()
+#2 {main}
+  thrown in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 41
+[09-Jul-2025 09:36:34 Europe/Berlin] PHP Warning:  require_once(app/views/auth/register.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 46
+[09-Jul-2025 09:36:34 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'app/views/auth/register.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php:46
+Stack trace:
+#0 C:\xampp\htdocs\Blog_platform\app\controllers\AuthController.php(59): Controller->view('auth/register', Array)
+#1 C:\xampp\htdocs\Blog_platform\index.php(81): AuthController->register()
+#2 {main}
+  thrown in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 46
+[09-Jul-2025 09:36:38 Europe/Berlin] PHP Warning:  require_once(app/views/auth/register.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 46
+[09-Jul-2025 09:36:38 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'app/views/auth/register.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php:46
+Stack trace:
+#0 C:\xampp\htdocs\Blog_platform\app\controllers\AuthController.php(67): Controller->view('auth/register')
+#1 C:\xampp\htdocs\Blog_platform\index.php(81): AuthController->register()
+#2 {main}
+  thrown in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 46
+[09-Jul-2025 09:36:39 Europe/Berlin] PHP Warning:  require_once(app/views/auth/register.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 46
+[09-Jul-2025 09:36:39 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'app/views/auth/register.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php:46
+Stack trace:
+#0 C:\xampp\htdocs\Blog_platform\app\controllers\AuthController.php(67): Controller->view('auth/register')
+#1 C:\xampp\htdocs\Blog_platform\index.php(81): AuthController->register()
+#2 {main}
+  thrown in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 46
+[09-Jul-2025 09:36:40 Europe/Berlin] PHP Warning:  require_once(app/views/auth/register.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 46
+[09-Jul-2025 09:36:40 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'app/views/auth/register.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php:46
+Stack trace:
+#0 C:\xampp\htdocs\Blog_platform\app\controllers\AuthController.php(67): Controller->view('auth/register')
+#1 C:\xampp\htdocs\Blog_platform\index.php(81): AuthController->register()
+#2 {main}
+  thrown in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 46
+[09-Jul-2025 09:36:40 Europe/Berlin] PHP Warning:  require_once(app/views/auth/register.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 46
+[09-Jul-2025 09:36:40 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'app/views/auth/register.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php:46
+Stack trace:
+#0 C:\xampp\htdocs\Blog_platform\app\controllers\AuthController.php(67): Controller->view('auth/register')
+#1 C:\xampp\htdocs\Blog_platform\index.php(81): AuthController->register()
+#2 {main}
+  thrown in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 46
+[09-Jul-2025 09:36:41 Europe/Berlin] PHP Warning:  require_once(app/views/auth/register.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 46
+[09-Jul-2025 09:36:41 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'app/views/auth/register.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php:46
+Stack trace:
+#0 C:\xampp\htdocs\Blog_platform\app\controllers\AuthController.php(67): Controller->view('auth/register')
+#1 C:\xampp\htdocs\Blog_platform\index.php(81): AuthController->register()
+#2 {main}
+  thrown in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 46
+[09-Jul-2025 09:36:41 Europe/Berlin] PHP Warning:  require_once(app/views/auth/register.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 46
+[09-Jul-2025 09:36:41 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'app/views/auth/register.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php:46
+Stack trace:
+#0 C:\xampp\htdocs\Blog_platform\app\controllers\AuthController.php(67): Controller->view('auth/register')
+#1 C:\xampp\htdocs\Blog_platform\index.php(81): AuthController->register()
+#2 {main}
+  thrown in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 46
+[09-Jul-2025 09:36:45 Europe/Berlin] PHP Warning:  require_once(app/views/auth/register.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 46
+[09-Jul-2025 09:36:45 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'app/views/auth/register.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php:46
+Stack trace:
+#0 C:\xampp\htdocs\Blog_platform\app\controllers\AuthController.php(67): Controller->view('auth/register')
+#1 C:\xampp\htdocs\Blog_platform\index.php(81): AuthController->register()
+#2 {main}
+  thrown in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 46
+[09-Jul-2025 09:36:46 Europe/Berlin] PHP Warning:  require_once(app/views/auth/register.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 46
+[09-Jul-2025 09:36:46 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'app/views/auth/register.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php:46
+Stack trace:
+#0 C:\xampp\htdocs\Blog_platform\app\controllers\AuthController.php(67): Controller->view('auth/register')
+#1 C:\xampp\htdocs\Blog_platform\index.php(81): AuthController->register()
+#2 {main}
+  thrown in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 46
+[09-Jul-2025 09:36:53 Europe/Berlin] PHP Warning:  require_once(app/views/auth/register.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 46
+[09-Jul-2025 09:36:53 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'app/views/auth/register.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php:46
+Stack trace:
+#0 C:\xampp\htdocs\Blog_platform\app\controllers\AuthController.php(67): Controller->view('auth/register')
+#1 C:\xampp\htdocs\Blog_platform\index.php(81): AuthController->register()
+#2 {main}
+  thrown in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 46
+[09-Jul-2025 09:40:06 Europe/Berlin] PHP Warning:  require_once(app/views/auth/register.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 51
+[09-Jul-2025 09:40:06 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'app/views/auth/register.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php:51
+Stack trace:
+#0 C:\xampp\htdocs\Blog_platform\app\controllers\AuthController.php(67): Controller->view('auth/register')
+#1 C:\xampp\htdocs\Blog_platform\index.php(79): AuthController->register()
+#2 {main}
+  thrown in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 51
+[09-Jul-2025 09:44:19 Europe/Berlin] PHP Warning:  require_once(app/views/auth/register.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 51
+[09-Jul-2025 09:44:19 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'app/views/auth/register.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php:51
+Stack trace:
+#0 C:\xampp\htdocs\Blog_platform\app\controllers\AuthController.php(74): Controller->view('auth/register')
+#1 C:\xampp\htdocs\Blog_platform\index.php(79): AuthController->register()
+#2 {main}
+  thrown in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 51
+[09-Jul-2025 09:44:20 Europe/Berlin] PHP Warning:  require_once(app/views/auth/register.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 51
+[09-Jul-2025 09:44:20 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'app/views/auth/register.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php:51
+Stack trace:
+#0 C:\xampp\htdocs\Blog_platform\app\controllers\AuthController.php(74): Controller->view('auth/register')
+#1 C:\xampp\htdocs\Blog_platform\index.php(79): AuthController->register()
+#2 {main}
+  thrown in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 51
+[09-Jul-2025 09:44:20 Europe/Berlin] PHP Warning:  require_once(app/views/auth/register.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 51
+[09-Jul-2025 09:44:20 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'app/views/auth/register.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php:51
+Stack trace:
+#0 C:\xampp\htdocs\Blog_platform\app\controllers\AuthController.php(74): Controller->view('auth/register')
+#1 C:\xampp\htdocs\Blog_platform\index.php(79): AuthController->register()
+#2 {main}
+  thrown in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 51
+[09-Jul-2025 09:44:20 Europe/Berlin] PHP Warning:  require_once(app/views/auth/register.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 51
+[09-Jul-2025 09:44:20 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'app/views/auth/register.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php:51
+Stack trace:
+#0 C:\xampp\htdocs\Blog_platform\app\controllers\AuthController.php(74): Controller->view('auth/register')
+#1 C:\xampp\htdocs\Blog_platform\index.php(79): AuthController->register()
+#2 {main}
+  thrown in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 51
+[09-Jul-2025 09:44:21 Europe/Berlin] PHP Warning:  require_once(app/views/auth/register.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 51
+[09-Jul-2025 09:44:21 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'app/views/auth/register.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php:51
+Stack trace:
+#0 C:\xampp\htdocs\Blog_platform\app\controllers\AuthController.php(74): Controller->view('auth/register')
+#1 C:\xampp\htdocs\Blog_platform\index.php(79): AuthController->register()
+#2 {main}
+  thrown in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 51
+[09-Jul-2025 09:44:21 Europe/Berlin] PHP Warning:  require_once(app/views/auth/register.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 51
+[09-Jul-2025 09:44:21 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'app/views/auth/register.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php:51
+Stack trace:
+#0 C:\xampp\htdocs\Blog_platform\app\controllers\AuthController.php(74): Controller->view('auth/register')
+#1 C:\xampp\htdocs\Blog_platform\index.php(79): AuthController->register()
+#2 {main}
+  thrown in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 51
+[09-Jul-2025 09:44:21 Europe/Berlin] PHP Warning:  require_once(app/views/auth/register.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 51
+[09-Jul-2025 09:44:21 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'app/views/auth/register.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php:51
+Stack trace:
+#0 C:\xampp\htdocs\Blog_platform\app\controllers\AuthController.php(74): Controller->view('auth/register')
+#1 C:\xampp\htdocs\Blog_platform\index.php(79): AuthController->register()
+#2 {main}
+  thrown in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 51
+[09-Jul-2025 09:44:21 Europe/Berlin] PHP Warning:  require_once(app/views/auth/register.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 51
+[09-Jul-2025 09:44:21 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'app/views/auth/register.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php:51
+Stack trace:
+#0 C:\xampp\htdocs\Blog_platform\app\controllers\AuthController.php(74): Controller->view('auth/register')
+#1 C:\xampp\htdocs\Blog_platform\index.php(79): AuthController->register()
+#2 {main}
+  thrown in C:\xampp\htdocs\Blog_platform\app\controllers\Controller.php on line 51
+[09-Jul-2025 09:48:39 Europe/Berlin] PHP Warning:  Undefined array key "E_mail" in C:\xampp\htdocs\Blog_platform\app\controllers\AuthController.php on line 19
+[09-Jul-2025 09:48:39 Europe/Berlin] PHP Warning:  Undefined array key "username" in C:\xampp\htdocs\Blog_platform\app\controllers\AuthController.php on line 20
+[09-Jul-2025 09:48:50 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Blog_platform\app\views\write.php on line 35
+[09-Jul-2025 09:48:50 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Blog_platform\app\views\write.php on line 35
+[09-Jul-2025 09:48:50 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Blog_platform\app\views\write.php on line 35
+[09-Jul-2025 09:48:50 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Blog_platform\app\views\write.php on line 35
+[09-Jul-2025 09:52:14 Europe/Berlin] PHP Warning:  Undefined array key "E_mail" in C:\xampp\htdocs\Blog_platform\app\controllers\AuthController.php on line 19
+[09-Jul-2025 09:52:14 Europe/Berlin] PHP Warning:  Undefined array key "username" in C:\xampp\htdocs\Blog_platform\app\controllers\AuthController.php on line 20

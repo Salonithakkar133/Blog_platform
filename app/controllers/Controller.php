@@ -6,16 +6,21 @@ class Controller {
     protected $models = [];
 
     public function __construct($db = null) {
-        if ($db) {
+    if ($db) {
             $this->db = $db;
         } else {
-            $database = new Database();
-            $this->db = $database->getConnection();
+            try {
+                $database = new Database();
+                $this->db = $database->getConnection();
+                $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            } catch (PDOException $e) {
+                echo "Database connection failed: " . $e->getMessage() . "<br>";
+                exit;
+            }
         }
         $this->initializeSession();
         $this->loadCoreModels();
     }
-
     protected function initializeSession() {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
@@ -23,6 +28,9 @@ class Controller {
     }
 
     protected function loadCoreModels() {
+        if (!file_exists('app/models/User.php') || !file_exists('app/models/Blog.php')) {
+            throw new Exception("Required model files are missing");
+        }
         require_once 'app/models/User.php';
         require_once 'app/models/Blog.php';
         $this->models['user'] = new User($this->db);

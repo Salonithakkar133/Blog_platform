@@ -5,6 +5,7 @@ class AuthController extends Controller {
     public function __construct($db = null) {
         parent::__construct($db);
     }
+
     public function login() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = [
@@ -40,8 +41,15 @@ class AuthController extends Controller {
                 'last_name' => $this->sanitize($_POST['last_name']),
                 'email' => $this->sanitize($_POST['email']),
                 'username' => $this->sanitize($_POST['username']),
-                'password' => $_POST['password']
+                'password' => $_POST['password'] ?? '',
+                'confirm_password' => $_POST['confirm_password'] ?? ''
             ];
+
+            // Client-side validation bypass check
+            if ($data['password'] !== $data['confirm_password']) {
+                $this->view('auth/register', ['errors' => ['Passwords do not match.'], 'data' => $data]);
+                return;
+            }
 
             try {
                 $result = $this->models['user']->register(
@@ -58,10 +66,12 @@ class AuthController extends Controller {
                     $this->view('auth/register', ['errors' => [$result], 'data' => $data]);
                 }
             } catch (PDOException $e) {
-                $this->view('auth/register', ['errors' => ['Database error'], 'data' => $data]);
+                $this->view('auth/register', ['errors' => ['Database error: ' . $e->getMessage()], 'data' => $data]);
+            } catch (Exception $e) {
+                $this->view('auth/register', ['errors' => ['Unexpected error: ' . $e->getMessage()], 'data' => $data]);
             }
         } else {
-            $this->view('auth/registration');
+            $this->view('auth/register');
         }
     }
 

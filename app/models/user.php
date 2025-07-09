@@ -4,6 +4,9 @@ class User {
     private $table_name = 'user';
 
     public function __construct($db) {
+        if (!$db || !$db->getAttribute(PDO::ATTR_CONNECTION_STATUS)) {
+            throw new Exception("Invalid database connection");
+        }
         $this->conn = $db;
     }
 
@@ -52,7 +55,6 @@ class User {
         }
     }
     
-
     public function getUserByEmail($email) {
         $query = "SELECT * FROM {$this->table_name} WHERE E_mail = :E_mail LIMIT 1";
         $stmt = $this->conn->prepare($query);
