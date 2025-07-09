@@ -5,7 +5,7 @@ class AuthController extends Controller {
     public function __construct($db = null) {
         parent::__construct($db);
     }
-   public function login() {
+    public function login() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = [
                 'email' => $this->sanitize($_POST['email'] ?? ''),
