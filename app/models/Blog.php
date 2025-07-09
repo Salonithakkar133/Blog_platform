@@ -84,25 +84,22 @@ class Blog {
                  blog_category = :category, 
                  image = :image";
         
+        $params = [
+            ':id' => $id,
+            ':title' => $title,
+            ':content' => $content,
+            ':category' => $category,
+            ':image' => $image
+        ];
+        
         if ($status !== null) {
             $query .= ", status = :status";
+            $params[':status'] = $status;
         }
         
         $query .= " WHERE id = :id";
         
         try {
-            $params = [
-                ':id' => $id,
-                ':title' => $title,
-                ':content' => $content,
-                ':category' => $category,
-                ':image' => $image
-            ];
-            
-            if ($status !== null) {
-                $params[':status'] = $status;
-            }
-            
             $stmt = $this->db->prepare($query);
             $result = $stmt->execute($params);
             $this->setErrorInfo($stmt->errorInfo());
@@ -122,7 +119,12 @@ class Blog {
                 ':id' => $id,
                 ':status' => $status
             ]);
+            $rowCount = $stmt->rowCount();
             $this->setErrorInfo($stmt->errorInfo());
+            if ($rowCount === 0) {
+                $this->setErrorInfo(['00000', 0, 'No rows updated (possibly invalid ID)']);
+                return false;
+            }
             return $result;
         } catch (PDOException $e) {
             $this->setErrorInfo($e->getMessage());
@@ -150,8 +152,6 @@ class Blog {
 
     private function setErrorInfo($errorInfo) {
         $this->lastErrorInfo = $errorInfo;
-        if (!empty($errorInfo) && $errorInfo[0] !== '00000') {
-            error_log(date('[Y-m-d H:i:s] ') . "Blog Model Error: " . print_r($errorInfo, true) . PHP_EOL, 3, __DIR__ . '/../logs/blog_model.log');
-        }
     }
 }
+?>

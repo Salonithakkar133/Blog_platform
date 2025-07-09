@@ -6,7 +6,6 @@ class AuthController extends Controller {
         parent::__construct($db);
     }
    public function login() {
-    error_log("enter login method: "); // Debug log
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = [
                 'email' => $this->sanitize($_POST['email'] ?? ''),
@@ -23,7 +22,6 @@ class AuthController extends Controller {
                 $_SESSION['last_name'] = $user['Last_name'];
                 $this->redirect('dashboard', ['message' => 'Login successful']);
             } else {
-                error_log("Login failed for email: " . $data['email']); // Debug log
                 $this->view('auth/login', ['errors' => ['Invalid email or password'], 'email' => $data['email']]);
             }
         } else {
@@ -60,7 +58,6 @@ class AuthController extends Controller {
                     $this->view('auth/register', ['errors' => [$result], 'data' => $data]);
                 }
             } catch (PDOException $e) {
-                error_log("Registration Error: " . $e->getMessage());
                 $this->view('auth/register', ['errors' => ['Database error'], 'data' => $data]);
             }
         } else {

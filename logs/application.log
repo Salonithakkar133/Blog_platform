@@ -5,3 +5,36 @@
 [08-Jul-2025 15:54:26 Europe/Berlin] PHP Parse error:  syntax error, unexpected token "elseif", expecting "function" or "const" in C:\xampp\htdocs\Blog_platform\app\controllers\BlogController.php on line 109
 [08-Jul-2025 15:54:51 Europe/Berlin] PHP Parse error:  syntax error, unexpected token "elseif", expecting "function" or "const" in C:\xampp\htdocs\Blog_platform\app\controllers\BlogController.php on line 109
 [08-Jul-2025 15:54:52 Europe/Berlin] PHP Parse error:  syntax error, unexpected token "elseif", expecting "function" or "const" in C:\xampp\htdocs\Blog_platform\app\controllers\BlogController.php on line 109
+[08-Jul-2025 21:56:50 Europe/Berlin] enter login method: 
+[09-Jul-2025 07:14:07 Europe/Berlin] enter login method: 
+[09-Jul-2025 07:14:52 Europe/Berlin] enter login method: 
+[09-Jul-2025 07:15:03 Europe/Berlin] enter login method: 
+[09-Jul-2025 07:15:03 Europe/Berlin] PHP Warning:  Undefined array key "E_mail" in C:\xampp\htdocs\Blog_platform\app\controllers\AuthController.php on line 19
+[09-Jul-2025 07:15:03 Europe/Berlin] PHP Warning:  Undefined array key "username" in C:\xampp\htdocs\Blog_platform\app\controllers\AuthController.php on line 20
+[09-Jul-2025 07:15:16 Europe/Berlin] enter login method: 
+[09-Jul-2025 07:15:16 Europe/Berlin] PHP Warning:  Undefined array key "E_mail" in C:\xampp\htdocs\Blog_platform\app\controllers\AuthController.php on line 19
+[09-Jul-2025 07:15:16 Europe/Berlin] PHP Warning:  Undefined array key "username" in C:\xampp\htdocs\Blog_platform\app\controllers\AuthController.php on line 20
+[09-Jul-2025 07:20:46 Europe/Berlin] enter login method: 
+[09-Jul-2025 07:20:53 Europe/Berlin] enter login method: 
+[09-Jul-2025 07:20:53 Europe/Berlin] PHP Warning:  Undefined array key "E_mail" in C:\xampp\htdocs\Blog_platform\app\controllers\AuthController.php on line 19
+[09-Jul-2025 07:20:53 Europe/Berlin] PHP Warning:  Undefined array key "username" in C:\xampp\htdocs\Blog_platform\app\controllers\AuthController.php on line 20
+[09-Jul-2025 07:28:09 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Blog_platform\app\views\write.php on line 35
+[09-Jul-2025 07:28:09 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Blog_platform\app\views\write.php on line 35
+[09-Jul-2025 07:28:09 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Blog_platform\app\views\write.php on line 35
+[09-Jul-2025 07:28:09 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Blog_platform\app\views\write.php on line 35
+[09-Jul-2025 07:28:09 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Blog_platform\app\views\write.php on line 35
+[09-Jul-2025 07:28:09 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Blog_platform\app\views\write.php on line 35
+[09-Jul-2025 07:28:09 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Blog_platform\app\views\write.php on line 35
+[09-Jul-2025 07:28:09 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Blog_platform\app\views\write.php on line 35
+[09-Jul-2025 07:33:03 Europe/Berlin] enter login method: 
+[09-Jul-2025 07:33:17 Europe/Berlin] enter login method: 
+[09-Jul-2025 07:33:18 Europe/Berlin] PHP Warning:  Undefined array key "E_mail" in C:\xampp\htdocs\Blog_platform\app\controllers\AuthController.php on line 19
+[09-Jul-2025 07:33:18 Europe/Berlin] PHP Warning:  Undefined array key "username" in C:\xampp\htdocs\Blog_platform\app\controllers\AuthController.php on line 20
+[09-Jul-2025 07:33:44 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Blog_platform\app\views\write.php on line 35
+[09-Jul-2025 07:33:44 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Blog_platform\app\views\write.php on line 35
+[09-Jul-2025 07:33:44 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Blog_platform\app\views\write.php on line 35
+[09-Jul-2025 07:33:44 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Blog_platform\app\views\write.php on line 35
+[09-Jul-2025 07:54:03 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Blog_platform\app\views\write.php on line 35
+[09-Jul-2025 07:54:03 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Blog_platform\app\views\write.php on line 35
+[09-Jul-2025 07:54:03 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Blog_platform\app\views\write.php on line 35
+[09-Jul-2025 07:54:03 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Blog_platform\app\views\write.php on line 35

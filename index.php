@@ -1,8 +1,7 @@
 <?php
-// Start session at the VERY TOP (before any output)
 session_start();
 
-// Configure error logging
+// Error logging setup
 if (!is_dir(__DIR__ . '/logs')) {
     mkdir(__DIR__ . '/logs', 0775, true);
 }
@@ -16,23 +15,38 @@ require_once 'app/controllers/AuthController.php';
 require_once 'app/controllers/Controller.php';
 require_once 'app/controllers/BlogController.php';
 
-// Handle actions first to catch POST/GET requests
-if (isset($_GET['action']) && isset($_GET['id'])) {
+$authController = new AuthController();
+$controller = new Controller();
+$blogController = new BlogController();
+
+// ✅ Handle blog actions (write/edit/delete/approve/reject)
+if (isset($_GET['action'])) {
     $action = $_GET['action'];
-    $id = (int)$_GET['id'];
-    $blogController = new BlogController();
-    
+    $id = isset($_GET['id']) ? (int)$_GET['id'] : null;
+
     try {
-        if ($action === 'edit' && $_SERVER['REQUEST_METHOD'] === 'GET') {
-            // Load the edit form
+        // ✅ Handle 'write' blog submission (no ID)
+        if ($action === 'write' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+            $blogController->handleAction('write');
+            exit;
+        }
+
+        // ✅ Handle other blog actions with or without ID
+        $handled = $blogController->handleAction($action, $id);
+
+        // ✅ Fallback for GET-based edit (if not handled internally)
+        if ($action === 'edit' && $_SERVER['REQUEST_METHOD'] === 'GET' && !$handled) {
             $blog = $blogController->getBlogById($id);
             if ($blog) {
-                $_SESSION['edit_blog'] = $blog;
-                header("Location: index.php?page=write");
+                $_SESSION['edit_blog_data'] = $blog;
+                header("Location: index.php?page=edit");
+                exit;
+            } else {
+                $_SESSION['message'] = 'Blog not found.';
+                header("Location: index.php?page=dashboard");
                 exit;
             }
         }
-        $blogController->handleAction($action, $id);
     } catch (Exception $e) {
         error_log(date('[Y-m-d H:i:s] ') . "Action failed: " . $e->getMessage() . ", Trace: " . $e->getTraceAsString() . PHP_EOL, 3, __DIR__ . '/logs/application.log');
         $_SESSION['message'] = 'An error occurred. Please try again.';
@@ -42,7 +56,7 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
     exit;
 }
 
-// Handle empty page parameter
+// ✅ Default page routing
 if (!isset($_GET['page']) || empty(trim($_GET['page']))) {
     if (isset($_SESSION['id'])) {
         header("Location: index.php?page=dashboard");
@@ -53,9 +67,6 @@ if (!isset($_GET['page']) || empty(trim($_GET['page']))) {
 }
 
 $page = trim($_GET['page']);
-$authController = new AuthController();
-$controller = new Controller();
-$blogController = new BlogController();
 
 switch ($page) {
     case 'login':
@@ -65,15 +76,15 @@ switch ($page) {
         }
         $authController->login();
         break;
-        
+
     case 'register':
         $authController->register();
         break;
-        
+
     case 'logout':
         $authController->logout();
         break;
-        
+
     case 'dashboard':
         if (!isset($_SESSION['id'])) {
             header("Location: index.php?page=login");
@@ -82,7 +93,7 @@ switch ($page) {
         $role = $_SESSION['role'] === 'admin' ? 'admin' : 'user';
         include_once "app/views/dashboard/$role.php";
         break;
-        
+
     case 'published':
         if (!isset($_SESSION['id'])) {
             header("Location: index.php?page=login");
@@ -94,7 +105,7 @@ switch ($page) {
         $_SESSION['blogs'] = $blogs;
         include_once "app/views/blogs/publish.php";
         break;
-        
+
     case 'pending':
         if (!isset($_SESSION['id'])) {
             header("Location: index.php?page=login");
@@ -109,7 +120,7 @@ switch ($page) {
         $_SESSION['blogs'] = $blogs;
         include_once "app/views/blogs/pending.php";
         break;
-        
+
     case 'write':
         if (!isset($_SESSION['id'])) {
             header("Location: index.php?page=login");
@@ -117,7 +128,18 @@ switch ($page) {
         }
         include_once "app/views/write.php";
         break;
+
+    case 'edit':
+        if (!isset($_SESSION['id'])) {
+            header("Location: index.php?page=login");
+            exit;
+        }
+        include_once "app/views/blogs/edit.php";
+        break;
+
+
         
+
     default:
         if (isset($_SESSION['id'])) {
             header("Location: index.php?page=dashboard");

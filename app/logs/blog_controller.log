@@ -1,0 +1,52 @@
+[2025-07-08 20:01:08] Delete attempt for id=2, status=approved, author_id=2
+[2025-07-08 20:01:08] Blog deleted successfully for id=2
+[2025-07-08 20:09:32] Image uploaded to: uploads/686d5edc6b194_1111.png
+[2025-07-08 20:09:32] Write attempt: title=mmmmmm, category=qqq, user_id=3
+[2025-07-08 20:09:32] Blog created successfully for user 3
+[2025-07-08 20:26:54] Attempting to reject blog id=3
+[2025-07-08 20:27:05] Delete attempt for id=3, status=rejected, author_id=3
+[2025-07-08 20:27:05] Blog deleted successfully for id=3
+[2025-07-08 20:27:37] Image uploaded to: uploads/686d6319b534a_1111.png
+[2025-07-08 20:27:37] Write attempt: title=qqqqqqq, category=qqqqq, user_id=3
+[2025-07-08 20:27:37] Blog created successfully for user 3
+[2025-07-08 20:28:08] Attempting to reject blog id=4
+[2025-07-08 20:57:22] Image uploaded to: uploads/686d6a1227997_bg5.png
+[2025-07-08 20:57:22] Write attempt: title=eeeeeee, category=eeeeee, user_id=2
+[2025-07-08 20:57:22] Blog created successfully for user 2
+[2025-07-08 20:57:35] Attempting to approve blog id=5
+[2025-07-08 21:03:44] Write attempt: title=qqq, category=qq, user_id=2
+[2025-07-08 21:03:44] Blog created successfully for user 2
+[2025-07-08 21:21:17] Delete attempt for id=5, status=approved, author_id=2
+[2025-07-08 21:21:17] Blog deleted successfully for id=5
+[2025-07-08 21:21:36] Image uploaded to: uploads/686d6fc0411d2_10122136.png
+[2025-07-08 21:21:36] Write attempt: title=qqqqqqqqq, category=qqqqqqq, user_id=2
+[2025-07-08 21:21:36] Blog created successfully for user 2
+[2025-07-08 21:23:22] Attempting to reject blog id=6
+[2025-07-08 21:30:11] Attempting to reject blog id=7
+[2025-07-08 21:41:14] Attempting to reject blog id=6
+[2025-07-08 21:41:22] Attempting to reject blog id=6
+[2025-07-08 21:42:06] Attempting to reject blog id=7
+[2025-07-08 21:42:15] Attempting to reject blog id=6
+[2025-07-08 21:45:56] Attempting to reject blog id=7
+[2025-07-08 21:45:59] Attempting to reject blog id=7
+[2025-07-08 21:46:32] Attempting to reject blog id=7
+[2025-07-08 21:47:57] Attempting to approve blog id=7
+[2025-07-08 21:53:38] Attempting to reject blog id=4
+[2025-07-08 21:54:09] Attempting to reject blog id=6
+[2025-07-08 21:54:15] Attempting to approve blog id=6
+[2025-07-08 21:55:30] Attempting to reject blog id=7
+[2025-07-08 21:56:29] Attempting to approve blog id=7
+[2025-07-09 07:17:21] Image uploaded to: uploads/686dfb61a2bb5_1111.png
+[2025-07-09 07:17:21] Write attempt: title=fashion, category=technology, user_id=2
+[2025-07-09 07:17:21] Blog created successfully for user 2
+[2025-07-09 07:17:38] Attempting to approve blog id=8
+[2025-07-09 07:20:59] Attempting to approve blog id=8
+[2025-07-09 07:21:50] Approve failed: SQLSTATE[HY000]: General error: 1205 Lock wait timeout exceeded; try restarting transaction
+[2025-07-09 07:21:56] Attempting to approve blog id=8
+[2025-07-09 07:22:47] Approve failed: SQLSTATE[HY000]: General error: 1205 Lock wait timeout exceeded; try restarting transaction
+[2025-07-09 07:24:42] Attempting to approve blog id=8
+[2025-07-09 07:25:33] Approve failed for id=8: SQLSTATE[HY000]: General error: 1205 Lock wait timeout exceeded; try restarting transaction
+[2025-07-09 07:27:18] Attempting to approve blog id=8
+[2025-07-09 07:28:09] Approve failed for id=8: SQLSTATE[HY000]: General error: 1205 Lock wait timeout exceeded; try restarting transaction
+[2025-07-09 07:33:22] Attempting to approve blog id=8
+[2025-07-09 07:33:22] Blog approved successfully for id=8

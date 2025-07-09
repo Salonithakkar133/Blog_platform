@@ -28,14 +28,9 @@ class User {
                 'password' => $hashedPassword,
                 'role' => 'user'
             ];
-            error_log("Executing query: $query with params: " . json_encode($params));
             $result = $stmt->execute($params);
-            if (!$result) {
-                error_log("Query failed: " . json_encode($stmt->errorInfo()));
-            }
             return $result;
         } catch (PDOException $e) {
-            error_log("Registration Query Error: " . $e->getMessage());
             throw $e;
         }
     }
@@ -48,13 +43,11 @@ class User {
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($user && password_verify($password, $user['password'])) {
-                // Return user data excluding the password
                 unset($user['password']);
                 return $user;
             }
             return false;
         } catch (PDOException $e) {
-            error_log("Login Error: " . $e->getMessage());
             return false;
         }
     }
@@ -74,4 +67,6 @@ class User {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }
+
+
 ?>

@@ -9,12 +9,11 @@ class BlogController extends Controller {
     public function getBlogs($userId = null, $status = null) {
         try {
             $blogs = $this->getModel('blog')->getAllBlogs($userId, $status);
-            
+
             if ($userId && !$status) {
                 $pendingBlogs = $this->getModel('blog')->getAllBlogs($userId, 'pending');
-                // Fix array merging
-                $blogs = array_merge($blogs, $pendingBlogs);
-                // Remove duplicates while preserving keys
+                $rejectedBlogs = $this->getModel('blog')->getAllBlogs($userId, 'rejected');
+                $blogs = array_merge($blogs, $pendingBlogs, $rejectedBlogs);
                 $uniqueIds = [];
                 $blogs = array_filter($blogs, function($blog) use (&$uniqueIds) {
                     if (in_array($blog['id'], $uniqueIds)) {
@@ -24,10 +23,9 @@ class BlogController extends Controller {
                     return true;
                 });
             }
-            
-            return array_values($blogs); // Re-index array
+
+            return array_values($blogs);
         } catch (Exception $e) {
-            error_log("Error in getBlogs: " . $e->getMessage());
             return [];
         }
     }
@@ -36,11 +34,10 @@ class BlogController extends Controller {
         try {
             $blog = $this->getModel('blog')->getBlogById($id);
             if (!$blog) {
-                error_log("Blog not found with ID: " . $id);
+                return null;
             }
             return $blog;
         } catch (Exception $e) {
-            error_log("Error in getBlogById: " . $e->getMessage());
             return null;
         }
     }
@@ -48,16 +45,14 @@ class BlogController extends Controller {
     public function handleAction($action, $id = null) {
         try {
             $this->requireAuth();
-            
+
             if ($action === 'write' && $_SERVER['REQUEST_METHOD'] === 'POST') {
                 $title = $this->sanitize($_POST['title'] ?? '');
                 $content = $this->sanitize($_POST['content'] ?? '');
                 $blog_category = $this->sanitize($_POST['blog_category'] ?? '');
                 $image = $_FILES['image']['name'] ? $this->handleImageUpload($_FILES['image']) : '';
 
-                $this->log("Write attempt: title=$title, category=$blog_category, user_id={$_SESSION['id']}");
                 if (empty($title) || empty($content) || empty($blog_category)) {
-                    $this->log("Write failed: Missing required fields");
                     $_SESSION['message'] = 'Missing required fields.';
                     $this->redirect('write');
                     return;
@@ -65,14 +60,11 @@ class BlogController extends Controller {
 
                 if ($this->getModel('blog')->create($title, $content, $_SESSION['id'], $blog_category, 'pending', $image)) {
                     $_SESSION['message'] = 'Blog submitted for approval!';
-                    $this->log("Blog created successfully for user {$_SESSION['id']}");
                     unset($_SESSION['blogs']);
                 } else {
-                    $errorInfo = $this->getModel('blog')->getLastErrorInfo();
                     $_SESSION['message'] = 'Failed to submit blog. Please try again.';
-                    $this->log("Blog create failed: " . print_r($errorInfo, true));
                 }
-                $this->redirect('dashboard');
+                $this->redirect($_SESSION['role'] === 'admin' ? 'admin_dashboard' : 'user_dashboard');
             }
             elseif ($action === 'edit') {
                 return $this->handleEditAction($id);
@@ -87,70 +79,72 @@ class BlogController extends Controller {
                 return $this->handleRejectAction($id);
             }
             else {
-                $this->log("Unknown action: $action for id=" . ($id ?? 'null'));
                 $_SESSION['message'] = 'Invalid action requested.';
-                $this->redirect('dashboard');
+                $this->redirect($_SESSION['role'] === 'admin' ? 'admin_dashboard' : 'user_dashboard');
             }
-            
+
         } catch (Exception $e) {
-            error_log("Error in handleAction: " . $e->getMessage());
             $_SESSION['message'] = 'An error occurred. Please try again.';
-            $this->redirect('dashboard');
+            $this->redirect($_SESSION['role'] === 'admin' ? 'admin_dashboard' : 'user_dashboard');
         }
     }
 
     private function handleEditAction($id) {
         $blog = $this->getBlogById($id);
-        
+
         if (!$blog) {
             $_SESSION['message'] = 'Blog not found.';
-            $this->redirect('dashboard');
+            $this->redirect($_SESSION['role'] === 'admin' ? 'admin_dashboard' : 'user_dashboard');
             return false;
         }
 
-        // Permission check
         if ($_SESSION['role'] !== 'admin' && $blog['author_id'] != $_SESSION['id']) {
             $_SESSION['message'] = 'Unauthorized action.';
-            $this->redirect('dashboard');
+            $this->redirect($_SESSION['role'] === 'admin' ? 'admin_dashboard' : 'user_dashboard');
             return false;
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $_SESSION['edit_blog_data'] = $blog;
-            $this->redirect('write');
+            $this->redirect('edit');
             return true;
-        } 
+        }
         elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $title = $this->sanitize($_POST['title'] ?? '');
             $content = $this->sanitize($_POST['content'] ?? '');
             $blog_category = $this->sanitize($_POST['blog_category'] ?? '');
-            
-            // Handle image upload or keep existing
             $image = $_FILES['image']['name'] 
                 ? $this->handleImageUpload($_FILES['image']) 
                 : ($_POST['existing_image'] ?? '');
 
-            // Validate inputs
             if (empty($title) || empty($content) || empty($blog_category)) {
                 $_SESSION['message'] = 'Missing required fields.';
-                $this->redirect('write');
+                $this->redirect('edit');
                 return false;
             }
 
-            // Determine status (admin keeps current, user sets to pending if published)
-            $status = ($_SESSION['role'] === 'admin') 
-                ? $blog['status'] 
-                : ($blog['status'] === 'approved' ? 'pending' : $blog['status']);
-
-            // Update blog
-            if ($this->getModel('blog')->update($id, $title, $content, $blog_category, $image, $status)) {
+            $status = $blog['status'];
+            if ($_SESSION['role'] === 'admin' && isset($_POST['approve'])) {
+                $status = 'approved';
+                $_SESSION['message'] = 'Blog approved and published successfully!';
+            } elseif ($blog['status'] === 'rejected' && $_SESSION['role'] !== 'admin') {
+                $status = 'pending';
+                $_SESSION['message'] = 'Blog updated and submitted for review!';
+            } else {
                 $_SESSION['message'] = 'Blog updated successfully!';
+            }
+
+            if ($this->getModel('blog')->update($id, $title, $content, $blog_category, $image, $status)) {
                 unset($_SESSION['edit_blog_data'], $_SESSION['blogs']);
+                if ($_SESSION['role'] === 'admin' && $status === 'approved') {
+                    $this->redirect('pending');
+                } else {
+                    $this->redirect($_SESSION['role'] === 'admin' ? 'admin_dashboard' : 'user_dashboard');
+                }
             } else {
                 $_SESSION['message'] = 'Failed to update blog.';
+                $this->redirect('edit');
             }
-            
-            $this->redirect('dashboard');
             return true;
         }
     }
@@ -159,55 +153,52 @@ class BlogController extends Controller {
         $blog = $this->getBlogById($id);
         if (!$blog) {
             $_SESSION['message'] = 'Blog not found.';
-            $this->redirect('dashboard');
+            $this->redirect($_SESSION['role'] === 'admin' ? 'admin_dashboard' : 'user_dashboard');
             return false;
         }
 
-        $this->log("Delete attempt for id=$id, status={$blog['status']}, author_id={$blog['author_id']}");
         if ($_SESSION['role'] !== 'admin' && $blog['author_id'] != $_SESSION['id']) {
             $_SESSION['message'] = 'Unauthorized action.';
-            $this->redirect('dashboard');
+            $this->redirect($_SESSION['role'] === 'admin' ? 'admin_dashboard' : 'user_dashboard');
             return false;
         }
 
         if ($this->getModel('blog')->delete($id)) {
             $_SESSION['message'] = 'Blog deleted successfully!';
-            $this->log("Blog deleted successfully for id=$id");
             unset($_SESSION['blogs']);
         } else {
-            $errorInfo = $this->getModel('blog')->getLastErrorInfo();
             $_SESSION['message'] = 'Failed to delete blog.';
-            $this->log("Blog delete failed: " . print_r($errorInfo, true));
         }
-        $this->redirect('dashboard');
+        $this->redirect($_SESSION['role'] === 'admin' ? 'admin_dashboard' : 'user_dashboard');
         return true;
     }
 
     private function handleApproveAction($id) {
-        $this->log("Attempting to approve blog id=$id");
+        $blog = $this->getBlogById($id);
+        if (!$blog) {
+            $_SESSION['message'] = 'Blog not found.';
+            $this->redirect('pending');
+            return false;
+        }
+
         if ($this->getModel('blog')->updateStatus($id, 'approved')) {
             $_SESSION['message'] = 'Blog approved!';
             unset($_SESSION['blogs']);
-            $this->redirect('published');
+            $this->redirect('pending');
         } else {
-            $errorInfo = $this->getModel('blog')->getLastErrorInfo();
-            $_SESSION['message'] = 'Failed to approve blog.';
-            $this->log("Approve failed: " . print_r($errorInfo, true));
+            $_SESSION['message'] = 'Failed to approve blog. Error: Unknown error';
             $this->redirect('pending');
         }
         return true;
     }
 
     private function handleRejectAction($id) {
-        $this->log("Attempting to reject blog id=$id");
         if ($this->getModel('blog')->updateStatus($id, 'rejected')) {
             $_SESSION['message'] = 'Blog rejected!';
             unset($_SESSION['blogs']);
             $this->redirect('pending');
         } else {
-            $errorInfo = $this->getModel('blog')->getLastErrorInfo();
             $_SESSION['message'] = 'Failed to reject blog.';
-            $this->log("Reject failed: " . print_r($errorInfo, true));
             $this->redirect('pending');
         }
         return true;
@@ -221,26 +212,16 @@ class BlogController extends Controller {
         $targetFile = $targetDir . uniqid() . '_' . basename($file["name"]);
         $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
         $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
-        
+
         if (!in_array($imageFileType, $allowedTypes)) {
-            $this->log("Invalid image type: $imageFileType");
             return '';
         }
 
         if (move_uploaded_file($file["tmp_name"], $targetFile)) {
-            $this->log("Image uploaded to: $targetFile");
             return $targetFile;
         } else {
-            $this->log("Image upload failed: " . print_r(error_get_last(), true));
             return '';
         }
     }
-
-    private function log($message) {
-        $logFile = __DIR__ . '/../logs/blog_controller.log';
-        if (!is_dir(dirname($logFile))) {
-            mkdir(dirname($logFile), 0775, true);
-        }
-        error_log(date('[Y-m-d H:i:s] ') . $message . PHP_EOL, 3, $logFile);
-    }
 }
+?>

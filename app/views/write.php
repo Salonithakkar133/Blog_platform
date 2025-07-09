@@ -27,14 +27,22 @@ if (isset($_SESSION['edit_id'])) {
         <textarea name="content" id="content" class="form-control" required><?php echo htmlspecialchars($blog['content'] ?? ''); ?></textarea>
     </div>
     <div class="form-group">
-        <label for="blog_category">Category</label>
-        <input type="text" name="blog_category" id="blog_category" class="form-control" value="<?php echo htmlspecialchars($blog['blog_category'] ?? ''); ?>" required>
+        <label>Category:</label><br>
+    <select name="blog_category" required>
+        <?php
+        $categories = ['Technology', 'Health', 'Travel', 'Education'];
+        foreach ($categories as $cat): ?>
+            <option value="<?= $cat ?>" <?= ($blog['blog_category'] === $cat) ? 'selected' : '' ?>>
+                <?= $cat ?>
+            </option>
+        <?php endforeach; ?>
+    </select><br><br>
     </div>
     <div class="form-group">
         <label for="image">Image</label>
         <input type="file" name="image" id="image" class="form-control-file">
         <?php if ($blog && $blog['image']): ?>
-            <p>Current Image: <img src="<?php echo htmlspecialchars($blog['image']); ?>" alt="Current" style="max-width: 200px;"></p>
+            <p>Current Image: <img src="<?php echo htmlspecialchars($blog['image']); ?>" alt="Current" style="max-inline-size: 200px;"></p>
         <?php endif; ?>
     </div>
     <button type="submit" class="btn btn-primary"><?php echo $blog ? 'Update Blog' : 'Submit Blog'; ?></button>

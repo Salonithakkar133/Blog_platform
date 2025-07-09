@@ -4,6 +4,12 @@ require_once 'app/views/template/header.php';
 $message = $_SESSION['message'] ?? '';
 unset($_SESSION['message']);
 $blogs = $_SESSION['blogs'] ?? [];
+
+if (!isset($blogs)) {
+    $blogController = new BlogController();
+    $blogs = $blogController->getBlogs(null, 'approved');
+    $_SESSION['blogs'] = $blogs;
+}
 ?>
 
 <?php if ($message): ?>
@@ -21,6 +27,7 @@ $blogs = $_SESSION['blogs'] ?? [];
                 <th>Author</th>
                 <th>Category</th>
                 <th>Status</th>
+                <th>Image</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -31,12 +38,14 @@ $blogs = $_SESSION['blogs'] ?? [];
                 <td><?php echo htmlspecialchars($blog['First_name'] . ' ' . $blog['Last_name']); ?></td>
                 <td><?php echo htmlspecialchars($blog['blog_category']); ?></td>
                 <td><?php echo htmlspecialchars($blog['status']); ?></td>
+                <td><?php if (!empty($blog['image'])): ?><img src="<?php echo htmlspecialchars($blog['image']); ?>" width="150"><?php endif; ?></td>
                 <td>
                     <?php if ($_SESSION['role'] === 'admin'): ?>
-                        <a href="index.php?page=write&action=edit&id=<?php echo $blog['id']; ?>" class="btn btn-primary btn-sm">Edit</a>
-                          <a href="index.php?page=write&action=edit&id=<?php echo $blog['id']; ?>" class="btn btn-primary btn-sm">Delete</a>
+                        <a href="index.php?page=edit&action=edit&id=<?php echo $blog['id']; ?>" class="btn btn-primary btn-sm">Edit</a>
+                        <a href="index.php?action=delete&id=<?php echo $blog['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this blog?')">Delete</a>
                     <?php elseif ($_SESSION['role'] === 'user' && $blog['author_id'] == $_SESSION['id']): ?>
-                        <!-- No edit for users on published blogs -->
+                        <a href="index.php?page=edit&action=edit&id=<?php echo $blog['id']; ?>" class="btn btn-primary btn-sm">Edit</a>
+                        <a href="index.php?action=delete&id=<?php echo $blog['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this blog?')">Delete</a>
                     <?php endif; ?>
                 </td>
             </tr>
