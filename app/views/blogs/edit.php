@@ -1,6 +1,6 @@
 <?php
 require_once 'App/Views/Template/header.php';
-// Fetch blog from session set in controller
+// fetch blog data from session ,controller ma set karse.
 $blog = $_SESSION['edit_blog_data'] ?? null;
 if (!$blog) {
     echo "<p>No blog data found for editing.</p>";

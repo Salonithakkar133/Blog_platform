@@ -27,7 +27,7 @@ if (isset($_SESSION['edit_id'])) {
         <textarea name="content" id="content" class="form-control" required><?php echo htmlspecialchars($blog['content'] ?? ''); ?></textarea>
     </div>
     <div class="form-group">
-      <label>Category:</label><br>
+    <label>Category:</label><br>
     <select name="blog_category" required>
         <?php
         $categories = ['Technology', 'Health', 'Travel', 'Education'];

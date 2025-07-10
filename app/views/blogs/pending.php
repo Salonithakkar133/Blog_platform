@@ -4,24 +4,17 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 ?>
 <?php
-
-// File: pending_rejected_blogs.php
 $title = 'Pending/Rejected Blogs - Blog Platform';
 require_once 'App/Views/Template/header.php';
 $message = $_SESSION['message'] ?? '';
 unset($_SESSION['message']);
-
-//require 'Controller.php';
 $blogController = new BlogController();
-
-// Always fetch fresh blogs
 if ($_SESSION['role'] === 'admin') {
     $blogs = $blogController->getBlogs(null, ['pending', 'rejected']);
 } else {
     $blogs = $blogController->getBlogs($_SESSION['id'], ['pending', 'rejected']);
 }
 ?>
-
 <?php if ($message): ?>
     <div class="alert alert-success"><?php echo htmlspecialchars($message); ?></div>
 <?php endif; ?>
