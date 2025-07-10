@@ -1,6 +1,6 @@
 <?php
 $title = 'Published Blogs - Blog Platform';
-require_once 'app/views/template/header.php';
+require_once 'App/Views/Template/header.php';
 $message = $_SESSION['message'] ?? '';
 unset($_SESSION['message']);
 $blogs = $_SESSION['blogs'] ?? [];
@@ -35,7 +35,7 @@ if (!isset($blogs)) {
             <?php foreach ($blogs as $blog): ?>
             <tr>
                 <td><?php echo htmlspecialchars($blog['title']); ?></td>
-                <td><?php echo htmlspecialchars($blog['First_name'] . ' ' . $blog['Last_name']); ?></td>
+                <td><?php echo htmlspecialchars($blog['firstName'] . ' ' . $blog['lastName']); ?></td>
                 <td><?php echo htmlspecialchars($blog['blog_category']); ?></td>
                 <td><?php echo htmlspecialchars($blog['status']); ?></td>
                 <td><?php if (!empty($blog['image'])): ?><img src="<?php echo htmlspecialchars($blog['image']); ?>" width="150"><?php endif; ?></td>
@@ -54,4 +54,4 @@ if (!isset($blogs)) {
     </table>
 <?php endif; ?>
 
-<?php require_once 'app/views/template/footer.php'; ?>
+<?php require_once 'App/Views/Template/footer.php'; ?>

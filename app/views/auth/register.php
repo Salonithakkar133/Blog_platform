@@ -1,7 +1,7 @@
 <?php
 $title = 'Register - Blog Platform';
-require_once 'app/views/template/header.php';
-echo "View loaded<br>"; // Debug output
+require_once 'App/Views/Template/header.php';
+//echo "View loaded<br>"; // Debug output
 ?>
     <h1>Register</h1>
     <?php if (isset($data['errors']) && !empty($data['errors'])): ?>
@@ -126,4 +126,4 @@ echo "View loaded<br>"; // Debug output
         document.getElementById("password").addEventListener("input", resetErrors);
         document.getElementById("confirm_password").addEventListener("input", resetErrors);
     </script>
-<?php require_once 'app/views/template/footer.php'; ?>
+<?php require_once 'App/Views/Template/footer.php'; ?>

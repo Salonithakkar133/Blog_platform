@@ -1,31 +1,24 @@
 <?php
-session_start();
+require_once 'App/Controllers/AuthController.php';
+require_once 'App/Controllers/Controller.php';
+require_once 'App/Controllers/BlogController.php';
 
-// Error logging setup
-if (!is_dir(__DIR__ . '/logs')) {
-    mkdir(__DIR__ . '/logs', 0775, true);
-}
-ini_set('log_errors', 1);
-ini_set('error_log', __DIR__ . '/logs/application.log');
-ini_set('display_errors', 0);
-ini_set('display_startup_errors', 0);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-require_once 'app/controllers/AuthController.php';
-require_once 'app/controllers/Controller.php';
-require_once 'app/controllers/BlogController.php';
-
+session_start();
 $authController = new AuthController();
 $controller = new Controller();
 $blogController = new BlogController();
 
-// Handle blog actions (write/edit/delete/approve/reject)
+// Handle karse  blog actions (write/edit/delete/approve/reject)
 if (isset($_GET['action'])) {
     $action = $_GET['action'];
     $id = isset($_GET['id']) ? (int)$_GET['id'] : null;
 
     try {
-        // Handle 'write' blog submission (no ID)
+        // Handle 'write' karse after  blog submission (no ID needed)
         if ($action === 'write' && $_SERVER['REQUEST_METHOD'] === 'POST') {
             $blogController->handleAction('write');
             exit;
@@ -34,7 +27,7 @@ if (isset($_GET['action'])) {
         //Handle other blog actions with or without ID
         $handled = $blogController->handleAction($action, $id);
 
-        //Fallback for GET-based edit (if not handled internally)
+        //next time edit goes for approve to admin 
         if ($action === 'edit' && $_SERVER['REQUEST_METHOD'] === 'GET' && !$handled) {
             $blog = $blogController->getBlogById($id);
             if ($blog) {
@@ -53,8 +46,6 @@ if (isset($_GET['action'])) {
     }
     exit;
 }
-
-// Default page routing
 if (!isset($_GET['page']) || empty(trim($_GET['page']))) {
     if (isset($_SESSION['id'])) {
         header("Location: index.php?page=dashboard");
@@ -89,7 +80,7 @@ switch ($page) {
             exit;
         }
         $role = $_SESSION['role'] === 'admin' ? 'admin' : 'user';
-        include_once "app/views/dashboard/$role.php";
+        include_once "App/Views/Dashboard/$role.php";
         break;
 
     case 'published':
@@ -101,7 +92,7 @@ switch ($page) {
             ? $blogController->getBlogs(null, 'approved') 
             : $blogController->getBlogs($_SESSION['id'], 'approved');
         $_SESSION['blogs'] = $blogs;
-        include_once "app/views/blogs/publish.php";
+        include_once "App/Views/Blogs/Publish.php";
         break;
 
     case 'pending':
@@ -116,7 +107,7 @@ switch ($page) {
             $blogs = array_unique($blogs, SORT_REGULAR);
         }
         $_SESSION['blogs'] = $blogs;
-        include_once "app/views/blogs/pending.php";
+        include_once "App/Views/Blogs/Pending.php";
         break;
 
     case 'write':
@@ -124,7 +115,7 @@ switch ($page) {
             header("Location: index.php?page=login");
             exit;
         }
-        include_once "app/views/write.php";
+        include_once "App/Views/Write.php";
         break;
 
     case 'edit':
@@ -132,11 +123,9 @@ switch ($page) {
             header("Location: index.php?page=login");
             exit;
         }
-        include_once "app/views/blogs/edit.php";
+        include_once "App/Views/Blogs/Edit.php";
         break;
 
-
-        
 
     default:
         if (isset($_SESSION['id'])) {

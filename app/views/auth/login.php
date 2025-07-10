@@ -1,6 +1,6 @@
 <?php
 $title = 'Login - Blog Platform';
-require_once 'app/views/template/header.php';
+require_once 'App/Views/Template/header.php';
 $errors = $data['errors'] ?? [];
 $email = $data['email'] ?? '';
 $message = $_SESSION['message'] ?? '';
@@ -33,4 +33,4 @@ unset($_SESSION['message']); // Clear message after display
     <p>Don't have an account? <a href="index.php?page=register">Register here</a></p>
 </form>
 
-<?php require_once 'app/views/template/footer.php'; ?>
+<?php require_once 'App/Views/Template/footer.php'; ?>

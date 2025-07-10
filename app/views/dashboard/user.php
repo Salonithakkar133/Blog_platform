@@ -1,6 +1,6 @@
 <?php
 $title = 'User Dashboard - Blog Platform';
-require_once 'app/views/template/header.php';
+require_once 'App/Views/Template/header.php';
 $message = $_SESSION['message'] ?? '';
 unset($_SESSION['message']);
 ?>
@@ -17,4 +17,4 @@ unset($_SESSION['message']);
 <p><a href="index.php?page=pending" class="btn btn-warning">View Pending Blogs</a></p>
 <p><a href="index.php?page=write" class="btn btn-primary">Write New Blog</a></p>
 
-<?php require_once 'app/views/template/footer.php'; ?>
+<?php require_once 'App/Views/Template/footer.php'; ?>

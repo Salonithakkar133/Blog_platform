@@ -1,6 +1,6 @@
 <?php
 $title = 'Write Blog - Blog Platform';
-require_once 'app/views/template/header.php';
+require_once 'App/Views/Template/header.php';
 $message = $_SESSION['message'] ?? '';
 unset($_SESSION['message']);
 $blog = null;
@@ -27,12 +27,12 @@ if (isset($_SESSION['edit_id'])) {
         <textarea name="content" id="content" class="form-control" required><?php echo htmlspecialchars($blog['content'] ?? ''); ?></textarea>
     </div>
     <div class="form-group">
-        <label>Category:</label><br>
+      <label>Category:</label><br>
     <select name="blog_category" required>
         <?php
         $categories = ['Technology', 'Health', 'Travel', 'Education'];
         foreach ($categories as $cat): ?>
-            <option value="<?= $cat ?>" <?= ($blog['blog_category'] === $cat) ? 'selected' : '' ?>>
+            <option value="<?= $cat ?>" <?= (isset($blog['blog_category']) && $blog['blog_category'] === $cat) ? 'selected' : '' ?>>
                 <?= $cat ?>
             </option>
         <?php endforeach; ?>
@@ -48,4 +48,4 @@ if (isset($_SESSION['edit_id'])) {
     <button type="submit" class="btn btn-primary"><?php echo $blog ? 'Update Blog' : 'Submit Blog'; ?></button>
 </form>
 
-<?php require_once 'app/views/template/footer.php'; ?>
+<?php require_once 'App/Views/Template/footer.php'; ?>

@@ -1,35 +1,75 @@
 <?php
 require_once 'Controller.php';
-
 class BlogController extends Controller {
+    /**
+     * BlogController constructor.
+     *
+     * @param \PDO|null $db Optional PDO instance
+     */
     public function __construct($db = null) {
         parent::__construct($db);
     }
-
+/**
+     * Fetch blogs based on user ID and status.
+     *
+     * @param int|null $userId
+     * @param string|array|null $status
+     * @return array
+     */
     public function getBlogs($userId = null, $status = null) {
-        try {
-            $blogs = $this->getModel('blog')->getAllBlogs($userId, $status);
-
-            if ($userId && !$status) {
-                $pendingBlogs = $this->getModel('blog')->getAllBlogs($userId, 'pending');
-                $rejectedBlogs = $this->getModel('blog')->getAllBlogs($userId, 'rejected');
-                $blogs = array_merge($blogs, $pendingBlogs, $rejectedBlogs);
-                $uniqueIds = [];
-                $blogs = array_filter($blogs, function($blog) use (&$uniqueIds) {
-                    if (in_array($blog['id'], $uniqueIds)) {
-                        return false;
-                    }
-                    $uniqueIds[] = $blog['id'];
-                    return true;
-                });
-            }
-
+    try {
+        if ($userId && !$status) {
+            // For users, always get both pending and rejected blogs by default
+            $blogs = $this->getModel('blog')->getAllBlogs($userId, ['pending', 'rejected']);
             return array_values($blogs);
-        } catch (Exception $e) {
-            return [];
+        } elseif ($userId && is_array($status)) {
+            $blogs = $this->getModel('blog')->getAllBlogs($userId, $status);
+            return array_values($blogs);
+        } else {
+            // For admins or other cases
+            $blogs = $this->getModel('blog')->getAllBlogs($userId, $status);
+            return array_values($blogs);
         }
+    } catch (Exception $e) {
+        return [];
+    }
+}
+
+/**
+     * Handles blog reject action.
+     *
+     * @param int $id Blog ID
+     * @return bool
+     */
+private function handleRejectAction($id) {
+    $blog = $this->getBlogById($id);
+    if (!$blog) {
+        $_SESSION['message'] = 'Blog not found.';
+        $this->redirect('pending');
+        return false;
     }
 
+    if ($this->getModel('blog')->updateStatus($id, 'rejected')) {
+        $_SESSION['message'] = 'Blog rejected!';
+        
+        // Force refresh the data
+        unset($_SESSION['blogs']); // Clear old data
+        
+        // For users, redirect to a page that will fetch fresh data
+        $this->redirect($_SESSION['role'] === 'admin' ? 'pending' : 'user_dashboard');
+    } else {
+        $_SESSION['message'] = 'Failed to reject blog.';
+        $this->redirect('pending');
+    }
+    return true;
+}
+
+/**
+     * Get blog by its ID.
+     *
+     * @param int $id
+     * @return array|null
+     */
     public function getBlogById($id) {
         try {
             $blog = $this->getModel('blog')->getBlogById($id);
@@ -41,10 +81,21 @@ class BlogController extends Controller {
             return null;
         }
     }
-
+/**
+     * Handle blog actions (write, edit, delete, approve, reject).
+     *
+     * @param string $action
+     * @param int|null $id
+     * @return mixed
+     */
     public function handleAction($action, $id = null) {
         try {
             $this->requireAuth();
+            if ($action === 'write' && $_SESSION['role'] === 'admin') {
+                $_SESSION['message'] = 'Admins are not allowed to write blogs.';
+                $this->redirect('admin_dashboard');
+            return;
+            }
 
             if ($action === 'write' && $_SERVER['REQUEST_METHOD'] === 'POST') {
                 $title = $this->sanitize($_POST['title'] ?? '');
@@ -88,7 +139,12 @@ class BlogController extends Controller {
             $this->redirect($_SESSION['role'] === 'admin' ? 'admin_dashboard' : 'user_dashboard');
         }
     }
-
+/**
+     * Handle editing a blog post.
+     *
+     * @param int $id
+     * 
+     */
     private function handleEditAction($id) {
         $blog = $this->getBlogById($id);
 
@@ -123,16 +179,20 @@ class BlogController extends Controller {
                 return false;
             }
 
-            $status = $blog['status'];
             if ($_SESSION['role'] === 'admin' && isset($_POST['approve'])) {
-                $status = 'approved';
-                $_SESSION['message'] = 'Blog approved and published successfully!';
-            } elseif ($blog['status'] === 'rejected' && $_SESSION['role'] !== 'admin') {
-                $status = 'pending';
-                $_SESSION['message'] = 'Blog updated and submitted for review!';
-            } else {
-                $_SESSION['message'] = 'Blog updated successfully!';
-            }
+    $status = 'approved';
+    $_SESSION['message'] = 'Blog approved and published successfully!';
+} elseif ($_SESSION['role'] !== 'admin') {
+    // Force blog status to pending on user edit (except if it's already pending)
+    if ($blog['status'] !== 'pending') {
+        $status = 'pending';
+        $_SESSION['message'] = 'Blog updated and submitted for admin approval.';
+    } else {
+        $status = 'pending'; // keep it pending
+        $_SESSION['message'] = 'Blog updated successfully!';
+    }
+}
+
 
             if ($this->getModel('blog')->update($id, $title, $content, $blog_category, $image, $status)) {
                 unset($_SESSION['edit_blog_data'], $_SESSION['blogs']);
@@ -148,7 +208,12 @@ class BlogController extends Controller {
             return true;
         }
     }
-
+     /**
+     * Handle deleting a blog post.
+     *
+     * @param int $id
+     * @return bool
+     */
     private function handleDeleteAction($id) {
         $blog = $this->getBlogById($id);
         if (!$blog) {
@@ -172,7 +237,12 @@ class BlogController extends Controller {
         $this->redirect($_SESSION['role'] === 'admin' ? 'admin_dashboard' : 'user_dashboard');
         return true;
     }
-
+/**
+     * Approve a blog post.
+     *
+     * @param int $id
+     * @return bool
+     */
     private function handleApproveAction($id) {
         $blog = $this->getBlogById($id);
         if (!$blog) {
@@ -191,20 +261,13 @@ class BlogController extends Controller {
         }
         return true;
     }
-
-    private function handleRejectAction($id) {
-        if ($this->getModel('blog')->updateStatus($id, 'rejected')) {
-            $_SESSION['message'] = 'Blog rejected!';
-            unset($_SESSION['blogs']);
-            $this->redirect('pending');
-        } else {
-            $_SESSION['message'] = 'Failed to reject blog.';
-            $this->redirect('pending');
-        }
-        return true;
-    }
-
-    private function handleImageUpload($file) {
+     /**
+     * Handles blog image upload and returns filename.
+     *
+     * @param array $file
+     * @return string
+     */
+        private function handleImageUpload($file) {
         $targetDir = "uploads/";
         if (!is_dir($targetDir)) {
             mkdir($targetDir, 0775, true);

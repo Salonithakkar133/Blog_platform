@@ -1,17 +1,24 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+?>
+<?php
+
+// File: pending_rejected_blogs.php
 $title = 'Pending/Rejected Blogs - Blog Platform';
-require_once 'app/views/template/header.php';
+require_once 'App/Views/Template/header.php';
 $message = $_SESSION['message'] ?? '';
 unset($_SESSION['message']);
-$blogs = $_SESSION['blogs'] ?? [];
 
-if (!isset($blogs)) {
-    $blogController = new BlogController();
-    $blogs = array_merge(
-        $blogController->getBlogs(null, 'pending'),
-        $blogController->getBlogs(null, 'rejected')
-    );
-    $_SESSION['blogs'] = $blogs;
+//require 'Controller.php';
+$blogController = new BlogController();
+
+// Always fetch fresh blogs
+if ($_SESSION['role'] === 'admin') {
+    $blogs = $blogController->getBlogs(null, ['pending', 'rejected']);
+} else {
+    $blogs = $blogController->getBlogs($_SESSION['id'], ['pending', 'rejected']);
 }
 ?>
 
@@ -40,25 +47,27 @@ if (!isset($blogs)) {
             <tr>
                 <td><?php echo htmlspecialchars($blog['title']); ?></td>
                 <td><?php echo htmlspecialchars($blog['content']); ?></td>
-                <td><?php echo htmlspecialchars($blog['First_name'] . ' ' . $blog['Last_name']); ?></td>
+                <td><?php echo htmlspecialchars($blog['firstName'] . ' ' . $blog['lastName']); ?></td>
                 <td><?php echo htmlspecialchars($blog['blog_category']); ?></td>
                 <td><?php echo htmlspecialchars($blog['status']); ?></td>
                 <td><?php if (!empty($blog['image'])): ?><img src="<?php echo htmlspecialchars($blog['image']); ?>" width="150"><?php endif; ?></td>
                 <td>
                     <?php if ($_SESSION['role'] === 'admin'): ?>
-                        <?php if ($blog['status'] === 'pending'): ?>
+                        <?php if ($blog['status'] === 'pending' || $blog['status'] === 'rejected'): ?>
                             <a href="index.php?page=edit&action=edit&id=<?php echo $blog['id']; ?>" class="btn btn-primary btn-sm">Edit</a>
                             <a href="index.php?action=approve&id=<?php echo $blog['id']; ?>" class="btn btn-success btn-sm">Approve</a>
                             <a href="index.php?action=reject&id=<?php echo $blog['id']; ?>" class="btn btn-danger btn-sm">Reject</a>
-                        <?php elseif ($blog['status'] === 'rejected'): ?>
-                            <a href="index.php?page=edit&action=edit&id=<?php echo $blog['id']; ?>" class="btn btn-primary btn-sm">Edit</a>
-                            <a href="index.php?action=approve&id=<?php echo $blog['id']; ?>" class="btn btn-success btn-sm">Approve</a>
-                            <a href="index.php?action=reject&id=<?php echo $blog['id']; ?>" class="btn btn-danger btn-sm">Reject</a>
+                            <a href="index.php?action=delete&id=<?php echo $blog['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this blog?')">Delete</a>
                         <?php endif; ?>
-                    <?php elseif ($_SESSION['role'] === 'user' && $blog['author_id'] == $_SESSION['id']): ?>
-                        <a href="index.php?page=edit&action=edit&id=<?php echo $blog['id']; ?>" class="btn btn-primary btn-sm">Edit</a>
-                        <a href="index.php?action=delete&id=<?php echo $blog['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this blog?')">Delete</a>
-                    <?php endif; ?>
+                    <?php elseif ($blog['author_id'] == $_SESSION['id']): ?>
+    <?php if ($blog['status'] === 'rejected'): ?>
+        <a href="index.php?action=delete&id=<?php echo $blog['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this rejected blog?')">Delete</a>
+    <?php else: ?>
+        <a href="index.php?page=edit&action=edit&id=<?php echo $blog['id']; ?>" class="btn btn-primary btn-sm">Edit</a>
+        <a href="index.php?action=delete&id=<?php echo $blog['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this blog?')">Delete</a>
+    <?php endif; ?>
+<?php endif; ?>
+
                 </td>
             </tr>
             <?php endforeach; ?>
@@ -66,4 +75,4 @@ if (!isset($blogs)) {
     </table>
 <?php endif; ?>
 
-<?php require_once 'app/views/template/footer.php'; ?>
+<?php require_once 'App/Views/Template/footer.php'; ?>

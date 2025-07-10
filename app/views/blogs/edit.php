@@ -1,10 +1,10 @@
 <?php
-require_once 'app/views/template/header.php';
+require_once 'App/Views/Template/header.php';
 // Fetch blog from session set in controller
 $blog = $_SESSION['edit_blog_data'] ?? null;
 if (!$blog) {
     echo "<p>No blog data found for editing.</p>";
-    require_once 'app/views/template/footer.php';
+    require_once 'App/Views/Template/footer.php';
     return;
 }
 ?>
@@ -53,4 +53,4 @@ if (!$blog) {
 </body>
 </html>
 
-<?php require_once 'app/views/template/footer.php'; ?>
+<?php require_once 'App/Views/Template/footer.php'; ?>
